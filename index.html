@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 </head>
 
-<body onkeypress="this.nextSibling.innerHTML = key_ev(event)" onkeyup="pers.img.src='pers/stay/1'+pers.vek+'.png';">
+<body onkeypress="key_ev(event)" onkeyup="pers.img.src='pers/stay/1'+pers.vek+'.png';">
 	
 	<canvas id="AAA1" height="480" width="640"  onload="starting()"></canvas>
 	<script>
@@ -12,6 +12,17 @@ var canv = document.getElementById("AAA1");
 
 var level = [
 "! @       !",
+"!      -  !",
+"!    --   !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
+"!         !",
 "!         !",
 "!         !",
 "!         !",
@@ -87,7 +98,7 @@ function drawAll()
 		pers.y=pers.y+1;
 	}
 
-	tcl=[((pers.x+16-(pers.x+16)%64))/64,((pers.y+16-(pers.y+16)%64))/64];
+	tcl=[((pers.x+16-(pers.x+16)%64))/64,((pers.y-(pers.y)%64))/64];
 	
 
 	if (level[tcl[0]+1,tcl[1]]=="-")
@@ -103,8 +114,10 @@ function drawAll()
 }
 function key_ev(event)
 {
-	tcl=[((pers.x+16-(pers.x+16)%64))/64,((pers.y-pers.y%64))/64]
-	console.log(level[tcl[0]+1][tcl[1]]);
+	tcl=[((pers.x+16-(pers.x+16)%64)/64),((pers.y+64-(pers.y+64)%64)/64)]
+	//console.log("x: "+String((pers.x+16-(pers.x+16)%64)/64)+" y: "+String((pers.y+64-(pers.y+64)%64)/64));
+	console.log(tcl);
+	console.log(level[tcl[1]+1][tcl[0]]);
 	if (event.which < 32) var keya = event.keyCode;
 	else var keya = String.fromCharCode(event.which);
 	if (((keya=="d")||(keya=="в"))&&(pers.x<600))
