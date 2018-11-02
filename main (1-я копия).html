@@ -1,0 +1,176 @@
+<head>
+	
+	<meta charset="utf-8">
+</head>
+
+<body onkeypress="this.nextSibling.innerHTML = key_ev(event)" onkeyup="pers.img.src='pers/stay/1'+pers.vek+'.png';">
+	
+	<canvas id="AAA1" height="480" width="640"  onload="starting()"></canvas>
+	<script>
+
+var canv = document.getElementById("AAA1");
+
+var level = [
+"! @       !",
+"!         !",
+"!         !",
+"!         !",
+"!      ---!",
+"! -  --   !",
+"!--  -----!",]
+var width=level[0].length;
+var height=level.length;
+canv.width=width*64
+canv.height=height*64
+ctx =canv.getContext('2d');
+
+
+class objec
+{
+	constructor(i_scr, x, y,solid)
+	{
+		this.img = new Image()
+		this.img.src=i_scr;
+		this.x = x;
+		this.y = y;
+		this.solid = solid;
+		this.m = 0;
+		this.vek ='';
+		this.ju=0;
+	}
+	draw()
+	{
+		ctx.drawImage(this.img, this.x, this.y);
+	}
+}
+var box  = [] 
+var pers =  new objec("./1.png",64,16,1);
+for (var y = 0; y<height; y++)
+{
+	var line = level[y];
+	for (var x = 0; x<width; x++)
+	{
+		var ch =line[x];
+		if (ch=="@")
+		{
+			pers =  new objec("./1.png",x*64,y*64,1);
+		}
+		if ((ch=="-")||(ch=="!"))
+		{
+			box.push (new objec("./ya.png",x*64,y*64,1));	
+		}
+	}
+}
+pers.stan=0;
+//box.push (new objec("./ya.png",64,64,1));
+//box.push (new objec("./ya.png",64,128,1));
+
+
+
+
+pers.img.onload = drawAll()		
+
+var tcl;
+
+function drawAll()
+{
+	ctx.fillStyle = "rgb(37, 50, 120)";
+	ctx.fillRect(0, 0, canv.width, canv.height);	
+	pers.draw();
+	for (var i=0; i<box.length; i++)
+	{
+		box[i].draw();
+	}
+	requestAnimationFrame(drawAll);
+	if(pers.stan==1)
+	{
+		pers.y=pers.y+1;
+	}
+
+	tcl=[((pers.x+16-(pers.x+16)%64))/64,((pers.y+16-(pers.y+16)%64))/64];
+	
+
+	if (level[tcl[0]+1,tcl[1]]=="-")
+	{
+		console.log("AAAAA");
+	}
+
+	if (pers.ju>0)
+	{
+		pers.y=pers.y-2;
+		pers.ju=pers.ju-2;
+	}
+}
+function key_ev(event)
+{
+	tcl=[((pers.x+16-(pers.x+16)%64))/64,((pers.y-pers.y%64))/64]
+	console.log(level[tcl[0]+1][tcl[1]]);
+	if (event.which < 32) var keya = event.keyCode;
+	else var keya = String.fromCharCode(event.which);
+	if (((keya=="d")||(keya=="в"))&&(pers.x<600))
+	{
+		if (pers.stan==0)
+		{
+			if (pers.frame==0)
+			{
+
+				pers.img.src='pers/walk/1.png';
+				pers.frame=1;
+			}
+			else
+			{
+				pers.img.src='pers/walk/0.png';
+				pers.frame=0;
+			}
+		}
+		
+		pers.vek='';
+		pers.x=pers.x+8;
+
+	}
+	else if (((keya=="a")||(keya=="ф"))&&(pers.x>8))
+	{
+		if (pers.stan==0)
+		{
+			if (pers.frame==0)
+			{
+
+				pers.img.src='pers/walk/1m.png';
+				pers.frame=1;
+
+			}
+			else
+			{
+				pers.img.src='pers/walk/0m.png';
+				pers.frame=0;
+			}
+		}
+		pers.vek='m';
+		pers.x=pers.x-8;
+
+	}
+	if (((keya=="w")||(keya=="ц"))&&(pers.y>8))
+	{
+		if ((pers.y==(height-1)*64)||(pers.stan==0))
+		{
+			pers.ju=256;
+		}
+	}
+	else if (((keya=="s")||(keya=="ы"))&&(pers.y<480-72))
+	{
+		pers.y=pers.y+8;
+
+	}
+	if ((keya!="s")&&(keya!="ы")&&(keya!="a")&&(keya!="ф")&&(keya!="d")&&(keya!="в")&&(keya!="w")&&(keya!="ц"))
+	{
+		pers.img.src="pers/stay/1.png";
+	}
+	
+}
+function starting()
+{
+	drawAll();
+}
+setTimeout(drawAll(),10);
+</script>
+</body>
